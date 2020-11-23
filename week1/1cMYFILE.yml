@@ -1,0 +1,7 @@
+---
+rtr1: 
+  host: rtr1
+  username: testuser
+  password: testpwd
+  device_type: cisco_ios
+  use_session_log: True

@@ -1,0 +1,7 @@
+---
+- name: first ansible playbook
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - debug: var=ansible_host
+    #- debug: var=ansible_default_ipv4.address

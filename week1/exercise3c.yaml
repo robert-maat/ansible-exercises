@@ -1,0 +1,12 @@
+---
+- name: Exercise 3a
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - debug: var=ansible_host
+- name: Exercise 3c
+  hosts: cisco 
+  gather_facts: False
+  tasks:
+    - debug: var=ansible_connection
+    - debug: var=ansible_host
