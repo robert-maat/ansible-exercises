@@ -1,0 +1,14 @@
+---
+- name: excercise 5
+  hosts: juniper
+  gather_facts: False
+  tasks:
+  - name: Run command "show interfaces terse"
+    junos_command:
+      commands: show interfaces terse
+    register: result
+
+  - name: Print result of command
+    debug:
+      var: result
+

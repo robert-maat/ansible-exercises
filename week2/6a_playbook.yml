@@ -1,0 +1,23 @@
+---
+- name: Exercise 6
+  hosts: arista
+  gather_facts: False
+  tasks:
+  - name: Run "show ip arp" command
+    eos_command:
+      commands: show ip arp
+    register: result
+
+  - name: Print output of command
+    debug:
+      msg: "{{ result }}"
+
+  - name: Run "show ip arp" command and pass it in json format
+    eos_command:
+      commands: show ip arp | json
+    register: json_result
+
+  - name: Print output of command
+    debug:
+      msg: "{{ json_result }}"
+

@@ -1,0 +1,17 @@
+---
+- name: excercise 4
+  hosts: cisco6
+  gather_facts: False
+  tasks:
+  - name: Clear logging command
+    ios_command:
+      commands:
+      - command: clear logging
+        prompt: confirm
+        answer: "y"
+    register: result
+
+  - name: print result of command clear logging
+    debug:
+      var: result
+
