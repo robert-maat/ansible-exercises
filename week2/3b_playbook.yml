@@ -1,0 +1,13 @@
+---
+- name: exercise 3
+  hosts: nxos
+  gather_facts: False
+  tasks:
+  - name: get show version info
+    nxos_command: 
+      commands: 
+        - show version
+        - show lldp neighbors
+    register: output
+  - debug: 
+      msg: "{{output}}"

@@ -1,0 +1,9 @@
+---
+- name: week2 1a exercise gather facts
+  hosts: arista5
+  gather_facts: True
+  tasks:
+  - name: print ansible facts
+    debug: 
+      msg: "{{ansible_facts}}"
+

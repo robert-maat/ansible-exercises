@@ -1,0 +1,15 @@
+---
+- name: week2 1a exercise gather facts
+  hosts: arista5
+  gather_facts: True
+  vars_files: my_vars.yml
+  tasks:
+  - name: print ansible facts
+    debug: 
+      msg: 
+      - "{{ansible_facts}}"
+      - "{{ansible_network_os}}"
+      - "{{ansible_host}}"
+  - name: print out groupvars
+    debug:
+      msg: desired EOS version = "{{desired_eos_version}}'
