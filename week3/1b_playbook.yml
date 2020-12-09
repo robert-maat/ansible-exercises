@@ -1,0 +1,45 @@
+---
+- name: Week3 Exercises
+  gather_facts: False
+  hosts: arista:cisco:juniper
+  tasks:
+    - name: do command to get arp
+      eos_command:
+        commands: show ip arp
+      register: result_eos
+      when: ansible_network_os == "eos"
+      tags: eos
+
+    - name: do command to get arp
+      ios_command:
+        commands: show ip arp
+      register: result_ios
+      when: ansible_network_os == "ios"
+      tags: ios
+      
+    - name: do command to get arp
+      junos_command:
+        commands: show arp
+      register: result_junos
+      when: ansible_network_os == "junos"
+      tags: junos
+  
+    - name: print debug info
+      debug:
+        msg: 
+          - "{{result_eos}}"
+      when: ansible_network_os == "eos"
+      tags: eos
+
+
+
+#    - name: print debug info
+#      debug:
+#        msg: 
+#          - "{{result_ios}}"
+#      when: ansible_network_os == "ios"
+#    - name: print debug info
+#      debug:
+#        msg: "{{result_junos}}"
+#      when: ansible_network_os == "junos"
+
