@@ -1,0 +1,8 @@
+---
+- name: create nxos config from j2 template files
+  hosts: nxos
+  gather_facts: False
+  tasks:
+    - template:
+        src: 5_nxos.j2
+        dest: "./configs/{{inventory_hostname}}.txt"
