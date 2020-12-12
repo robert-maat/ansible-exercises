@@ -1,0 +1,8 @@
+---
+- name: create arista config from j2 template files
+  hosts: arista
+  gather_facts: False
+  tasks:
+    - template:
+        src: 4_arista.j2
+        dest: "./configs/{{inventory_hostname}}.txt"

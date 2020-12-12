@@ -1,0 +1,45 @@
+!
+transceiver qsfp default-mode 4x10G
+!
+hostname {{ inventory_hostname }}
+!
+ntp server {{ ntp_server1 }}
+!
+spanning-tree mode rapid-pvst
+!
+aaa authorization exec default local
+!
+no aaa root
+!
+!
+clock timezone {{ timezone }}
+!
+vlan 2-7
+!
+{% for interface, interface_options in interfaces.items() %}
+interface {{ interface }}
+{% if interface_options.vlan is defined %}
+   switchport access vlan {{ interface_options.vlan }}
+{% endif %}
+{% if (interface_options.stp_portfast is defined and interface_options.stp_portfast == True) %}
+   spanning-tree portfast
+{% endif %}
+{% if interface_options.stp_cost is defined %}
+   spanning-tree cost {{ interface_options.stp_cost }}
+{% endif %}
+{% if (interface_options.shutdown is defined and interface_options.shutdown == True) %}
+   shutdown
+{% endif %}
+!
+{% endfor %}
+interface Vlan1
+   ip address {{ vlan1_ip_address }}/{{ vlan1_netmask }}
+!
+ip route 0.0.0.0/0 {{ def_gateway }}
+!
+ip routing
+!
+management api http-commands
+   no shutdown
+!
+end
