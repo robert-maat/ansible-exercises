@@ -1,0 +1,26 @@
+---
+- name: exercise 3
+  gather_facts: False
+  hosts: nxos
+  tasks:
+  - name: configure nxos L3 int.
+    nxos_l3_interfaces:
+      config:
+        - name: Ethernet1/4
+          ipv4:
+          - address: "{{ eth1_4_ipAddr }}/{{ eth1_4_cidr }}"
+      state: merged
+
+  - name: test with pinging
+    net_ping:
+      dest: "{{ neighbor_ip }}"
+    register: output
+
+  - name: print ping output
+    debug:
+      msg: "{{ output }}"
+
+  - name: check 4 or more pings arive
+    assert:
+      that:
+        - output.packets_rx >= 4

@@ -1,0 +1,43 @@
+---
+- name: Exercise 5
+  hosts: nxos
+  gather_facts: False
+  tasks:
+  - name: configure NXOS inteface to switchport
+    nxos_interfaces:
+      config:
+      - name: Ethernet1/3
+        mode: layer2
+        enabled: True
+      state: merged
+
+  - name: configure port to trunk mode
+    nxos_l2_interface:
+      aggregate:
+      - name: Ethernet1/3
+        mode: trunk
+      state: present
+
+  - name: configure native vlan 4
+    nxos_l2_interfaces:
+      config:
+      - name: Ethernet1/3
+        trunk:
+          native_vlan: 4
+
+  - name: show config
+    nxos_command:
+      commands: show interface Ethernet1/3 trunk | json
+    register: output
+
+  - name: print output 
+    debug:
+      msg: "{{ output }}"
+
+  - name: print output filtert 
+    debug:
+      msg: "{{ output.stdout[0].TABLE_interface.ROW_interface.native }}"
+
+  - name: Check if native vlan is 4
+    assert:
+      that: "{{ output.stdout[0].TABLE_interface.ROW_interface.native }} == 4"

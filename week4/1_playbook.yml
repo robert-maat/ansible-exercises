@@ -1,0 +1,42 @@
+---
+- name: Week4 exercise 1
+  gather_facts: False
+  hosts: cisco:nxos
+  tasks:
+    - name: bannerconfig on ios
+      ios_banner:
+        banner: login
+        text: |
+          ************************************
+          * banner "{{ansible_network_os}}"
+          ************************************ 
+        state: present
+      when: ansible_network_os == "ios"
+      notify: write mem
+
+    - name: bannerconfig on nxos
+      nxos_banner:
+        banner: exec
+        text: |
+          ************************************
+          * banner "{{ansible_network_os}}"
+          ************************************ 
+        state: present
+      when: ansible_network_os == "nxos"
+      notify: nxos_write mem
+
+  handlers:
+    - name: write mem
+      ios_command:
+        commands: write mem
+      changed_when: True
+      when: ansible_network_os == "ios"
+    - name: nxos_write mem
+      nxos_command:
+        commands: copy run start
+      changed_when: True
+      when: ansible_network_os == "nxos"
+#      nxos_commands:
+#        - commands: copy run start
+#      when: ansible_network_os == nxos
+#      changed_when: True

@@ -1,0 +1,71 @@
+---
+- name: exercise 4
+  hosts: arista
+  gather_facts: False
+  tasks:
+  - name: configure vlans on eos
+    eos_vlans:
+      config:
+        - name: Robert_vlan
+          #state: active
+          vlan_id: 272
+      state: merged
+
+  - name: configure vlan "{{ vlanName }}" on interface eos
+    eos_l2_interfaces:
+      config:
+        - name: "{{ interfaceName }}"
+          #mode: access
+          access:
+            vlan: "{{ vlanId }}"
+      state: merged
+
+  - name: gather own facts
+    eos_command:
+      commands: show vlan | json
+    register: output
+
+
+#  - name: Check if vlan on interface is correct with assert
+#    assert:
+#      that:
+#        eos_command:
+#          commands: show vlan | json
+#        register: output
+
+#  - name: print debug output
+#    debug:
+#      msg: "{{ output.stdout[0].vlans }}"
+#
+#  - name: print debug output keys
+#    debug:
+#      msg: "Key is: {{ item.key }} value is: {{item.value}} "
+#    with_dict: "{{ output.stdout[0].vlans }}" 
+
+  - name: set_fact when "{{ vlanId }}" in key
+    set_fact:
+      vlanid_exists: True
+    loop: "{{ lookup('dict', output.stdout[0].vlans) }}"
+    when: "'{{ vlanId }}' == item.key"
+
+#  - name: print debug output
+#    debug:
+#      msg: "{{ output.stdout[0].vlans[vlanId|string] }}"
+
+#  - name: print debug output keys
+#    debug:
+#      msg: "Key is: {{ item.key }} value is: {{item.value}} "
+#    with_dict: "{{ output.stdout[0].vlans[vlanId|string] }}" 
+
+  - name: set_fact when "{{ vlanId }}" is configured on "{{ interfaceName }}"
+    set_fact:
+      vlan_on_interface: True
+    loop: "{{ query('dict', output.stdout[0].vlans[vlanId|string].interfaces) }}"
+    when: "'{{ interfaceName }}' in item.key"
+
+  - name: assert statements if vlan existes and is configured on interface
+    assert:
+      that: 
+        - "{{ vlanid_exists }}"
+        - "{{ vlan_on_interface }}"
+      msg: vlan exists and is configured

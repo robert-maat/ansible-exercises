@@ -1,0 +1,5 @@
+---
+eth1_4_ipAddr: 10.227.72.2
+eth1_4_cidr: 24
+neighbor_ip: 10.227.72.1
+

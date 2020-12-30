@@ -1,0 +1,10 @@
+---
+- name: exercise 2
+  hosts: cisco1
+  gather_facts: False
+  tasks:
+  - name: ios_system config change
+    ios_system:
+      hostname: "{{ temp_hostname }}"
+      domain_name: "{{ domain_name }}"
+      name_servers: "{{ nameservers_google }}"
