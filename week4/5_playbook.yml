@@ -3,31 +3,31 @@
   hosts: nxos
   gather_facts: False
   tasks:
-  - name: configure NXOS inteface to switchport
+  - name: "configure NXOS inteface {{ intf_name }} to {{ intf_mode }} switchport" 
     nxos_interfaces:
       config:
-      - name: Ethernet1/3
-        mode: layer2
+      - name: "{{ intf_name }}"
+        mode: "{{ intf_mode }}"
         enabled: True
       state: merged
 
   - name: configure port to trunk mode
     nxos_l2_interface:
       aggregate:
-      - name: Ethernet1/3
-        mode: trunk
+      - name: "{{ intf_name }}"
+        mode: "{{ switchport_mode }}" 
       state: present
 
-  - name: configure native vlan 4
+  - name: "configure native vlan {{ native_vlan }}"
     nxos_l2_interfaces:
       config:
-      - name: Ethernet1/3
+      - name: "{{ intf_name }}"
         trunk:
-          native_vlan: 4
+          native_vlan: "{{ native_vlan }}"
 
   - name: show config
     nxos_command:
-      commands: show interface Ethernet1/3 trunk | json
+      commands: show interface {{ intf_name }} trunk | json
     register: output
 
   - name: print output 
@@ -38,6 +38,6 @@
     debug:
       msg: "{{ output.stdout[0].TABLE_interface.ROW_interface.native }}"
 
-  - name: Check if native vlan is 4
+  - name: Check if native vlan is {{ native_vlan }}
     assert:
-      that: "{{ output.stdout[0].TABLE_interface.ROW_interface.native }} == 4"
+      that: "{{ output.stdout[0].TABLE_interface.ROW_interface.native }} == {{ native_vlan}}"
