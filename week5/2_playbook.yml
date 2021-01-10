@@ -1,0 +1,9 @@
+---
+- name: configure ntp dns and domainname with templates and variables
+  hosts: arista:cisco:juniper:nxos
+  tasks:
+  - name: All devices config NTP and DNS
+    vars:
+        ansible_connection: network_cli
+    cli_config:
+      config: "{{ lookup('template', './templates/{{ ansible_network_os }}/global.j2') }}"

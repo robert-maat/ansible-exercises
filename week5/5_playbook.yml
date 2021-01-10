@@ -1,0 +1,25 @@
+---
+- name: Exercise 5 - login with SSH Keyfile 
+  gather_facts: False
+  hosts: cisco1:cisco2
+  vars:
+    ansible_user: student1
+    ansible_ssh_private_key_file: "~/.ssh/student_key"
+  tasks:
+    - name: show user command to check the user login type
+      ios_command:
+        commands: show users
+      register: output
+
+    - name: show output of show user
+      debug: 
+        msg: "{{ output }}"
+
+    - name: test if user is in output with assert
+      assert:
+        that: 
+          - "'student1' in output.stdout[0]"
+        success_msg: student1 found in show user
+        fail_msg: wrong user to login. Not using student1
+
+

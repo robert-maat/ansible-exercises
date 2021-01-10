@@ -1,0 +1,20 @@
+---
+- name: configure NXOS with templates week3
+  gather_facts: false
+  hosts: nxos
+  tasks:
+  - name: Nexus NXOS bgp config with templates from week3   
+    nxos_config:
+      src: "./templates/{{ ansible_network_os }}/nxos_bgp_interfaces.j2"
+      #save_when: changed
+
+  - name: check if BGP session is up
+    nxos_command:
+      commands: show ip bgp summary
+    register: output
+    tags: check 
+
+  - name: print output of check bgp
+    debug:
+      msg: "{{ output }}"
+    tags: check 

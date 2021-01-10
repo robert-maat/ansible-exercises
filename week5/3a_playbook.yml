@@ -1,0 +1,31 @@
+---
+- name: Exercise 3
+  hosts: cisco5:cisco6
+  gather_facts: False
+  tasks:
+    - name: configure accesslist on cisco device with ios_config
+      ios_config:
+        parents: ip access-list extended TEST-ANSIBLE1
+        before: no ip access-list extended TEST-ANSIBLE1
+        lines:
+          - permit ip host 10.1.1.1 any
+          - permit ip host 10.1.1.2 any
+          - permit ip host 10.1.1.3 any
+          - permit ip host 10.1.1.4 any
+          - permit ip host 10.1.1.5 any
+          - permit ip host 10.1.1.6 any
+          - permit ip host 10.1.1.7 any
+          - permit ip host 10.1.1.8 any
+          - permit ip host 10.1.1.9 any
+          - permit ip host 10.1.1.10 any
+        match: exact
+        replace: block
+
+    - name: verify ACL
+      ios_command:
+        commands: show access-list TEST-ANSIBLE1
+      register: output
+
+    - name: print ACL fetched with the verify
+      debug:
+        msg: "{{ output }}"

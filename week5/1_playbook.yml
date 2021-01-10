@@ -1,0 +1,35 @@
+---
+- name: configure ntp dns and domainname with templates and variables
+  hosts: arista:cisco:juniper:nxos
+  tasks:
+  - name: Cisco IOS config
+    ios_config:
+      src: "./templates/{{ ansible_network_os }}/global.j2"
+      #backup: yes
+      save_when: changed
+    when: ansible_network_os == "ios"
+    tags:
+    - cisco
+  
+  - name: Arista EOS config
+    eos_config:
+      src: "./templates/{{ ansible_network_os }}/global.j2"
+      #backup: yes
+      save_when: changed
+    when: ansible_network_os == "eos"
+        
+  - name: Nexus NXOS config
+    nxos_config:
+      src: "./templates/{{ ansible_network_os }}/global.j2"
+      #backup: yes
+      save_when: changed
+    when: ansible_network_os == "nxos"
+        
+  - name: Juniper JUNOS config
+    junos_config:
+      src: "./templates/{{ ansible_network_os }}/global.j2"
+      #backup: yes
+      #save_when: changed 
+    when: ansible_network_os == "junos"
+    tags:
+    - junos    
