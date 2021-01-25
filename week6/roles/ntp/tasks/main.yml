@@ -1,0 +1,25 @@
+---
+- name: arista config
+  eos_config:
+    src: "{{ ansible_network_os }}_ntp.j2"
+  when: ansible_network_os == "eos"
+  tags: eos
+
+- name: cisco IOS config
+  ios_config:
+    src: "{{ ansible_network_os }}_ntp.j2"
+  when: ansible_facts.net_iostype is defined and ansible_facts.net_iostype == "IOS"
+  tags: ios
+
+- name: cisco IOS-XE config
+  ios_config:
+    src: "{{ ansible_network_os }}_ntp.j2"
+  when: ansible_facts.net_iostype is defined and ansible_facts.net_iostype == "IOS-XE"
+  tags: iosxe
+
+- name: cisco NXOS config
+  nxos_config:
+    src: "{{ ansible_network_os }}_ntp.j2"
+  when: ansible_network_os == "nxos"
+  tags: nxos
+

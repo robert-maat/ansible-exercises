@@ -1,0 +1,7 @@
+---
+- name: Excercise 1
+  gather_facts: False
+  hosts: localhost
+  tasks:
+  - name: include_tasks with pasing a variable
+    import_tasks: subtask1-2.yml

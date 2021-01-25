@@ -1,0 +1,7 @@
+---
+- name: cisco IOS config
+  ios_config:
+    src: "{{ ansible_network_os }}_vrf.j2"
+  when: ansible_facts.net_iostype is defined and ansible_facts.net_iostype == "IOS-XE"
+  tags: ios
+

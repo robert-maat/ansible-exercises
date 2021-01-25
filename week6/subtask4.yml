@@ -1,0 +1,44 @@
+---
+- name: arista config
+  eos_config:
+    lines:
+    - ip name-server {{ dns_server1 }}
+    - ip name-server {{ dns_server2 }}
+    - ip domain-name {{ domain_name }}
+    - ntp server {{ ntp_server1 }}
+    - ntp server {{ ntp_server2 }}
+  when: ansible_network_os == "eos"
+  tags: eos
+
+- name: cisco IOS config
+  ios_config:
+    lines:
+    - ip name-server {{ dns_server1 }}
+    - ip name-server {{ dns_server2 }}
+    - ip domain name {{ domain_name }}
+    - ntp server {{ ntp_server1 }}
+    - ntp server {{ ntp_server2 }}
+  when: ansible_facts.net_iostype is defined and ansible_facts.net_iostype == "IOS"
+  tags: ios
+
+- name: cisco IOS-XE config
+  ios_config:
+    lines:
+    - ip name-server {{ dns_server1 }} {{ dns_server2 }}
+    - ip domain name {{ domain_name }}
+    - ntp server {{ ntp_server1 }}
+    - ntp server {{ ntp_server2 }}
+  when: ansible_facts.net_iostype is defined and ansible_facts.net_iostype == "IOS-XE"
+  tags: iosxe
+
+- name: cisco NXOS config
+  nxos_config:
+    lines:
+    - ip domain-name {{ domain_name }}
+    - ip name-server {{ dns_server1 }} {{ dns_server2 }}
+    - ntp server {{ ntp_server1 }} use-vrf management
+    - ntp server {{ ntp_server2 }} use-vrf default
+  when: ansible_network_os == "nxos"
+  tags: nxos
+
+

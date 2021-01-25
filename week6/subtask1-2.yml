@@ -1,0 +1,8 @@
+- name: subtask running and printing IP adres out of loop
+  debug:
+    msg: "printing ip address {{ item }}"
+  loop:
+    - 1.1.1.1
+    - 2.2.2.2
+    - 3.3.3.3
+    - 4.4.4.4

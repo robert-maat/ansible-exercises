@@ -1,0 +1,12 @@
+---
+- name: Excercise 1
+  gather_facts: False
+  hosts: localhost
+  tasks:
+  - name: include_tasks with pasing a variable
+    include_tasks: "{{ var_tasks }}" 
+    loop:
+      - 1.1.1.1
+      - 2.2.2.2
+      - 3.3.3.3
+      - 4.4.4.4

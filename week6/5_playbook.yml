@@ -1,0 +1,5 @@
+---
+- name: Excercise 5 with roles
+  hosts: arista:cisco:nxos
+  roles:
+    - ntp

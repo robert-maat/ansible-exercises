@@ -1,0 +1,21 @@
+---
+- name: debug task 1
+  debug:
+    msg: blaat
+  tags: schaap
+
+- name: debug task 2
+  debug:
+    msg: piep
+  tags: muis
+
+- name: debug task 3
+  debug:
+    msg: miau
+  tags: poes
+
+- name: debug task 4
+  debug:
+    msg: boe
+  tags: koe 
+

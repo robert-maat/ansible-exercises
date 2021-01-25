@@ -1,0 +1,5 @@
+---
+- name: Excercise 6 with roles
+  hosts: cisco5:cisco6
+  roles:
+    - vrf
