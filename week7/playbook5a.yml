@@ -1,0 +1,45 @@
+---
+- name: Exercise 5a
+  gather_facts: False
+  hosts: nxos
+  vars: 
+    command: "show lldp neighbors"
+
+  tasks:
+  - name: do command
+    nxos_command:
+      commands: "{{ command }}"
+    register: output
+
+  - name: facts1
+    set_fact:
+      show_lldp: "{{output.stdout[0] }}"
+
+  - debug:
+      msg: "{{ show_lldp }}"
+
+
+  - name: get info
+    set_fact:
+      lldp_neighbor: "{{ show_lldp | regex_findall('^(\\S+)\\s+(Eth\\S+)\\s+\\S+\\s+\\S+\\s+(Ethernet\\S+)', multiline=True) }}"
+
+  - debug:
+      msg: "{{ lldp_neighbor }}"
+    
+    
+#  - debug:
+#      msg: "{{ show_lldp_no_fline }}"
+#  
+#  - name: strip info line 2
+#    set_fact:
+#      show_lldp_no_sline: "{{ show_lldp_no_fline | regex_replace('\\(R\\) Router.*Device') | trim }}"
+#    
+#  - debug:
+#      msg: "{{ show_lldp_no_sline }}"
+#
+#  - name: strip info line 3
+#    set_fact:
+#      show_lldp_no_tline: "{{ show_lldp_no_sline | regex_replace('\\(R\\) Router.*Device') | trim }}"
+#    
+#  - debug:
+#      msg: "{{ show_lldp_no_tline }}"

@@ -1,0 +1,23 @@
+---
+- name: Exercise 3b
+  gather_facts: False
+  hosts: arista
+  vars:
+    platform: "arista_eos"
+    command: "show vlan"
+    # where {{ username }} is the name of your lab user
+    textfsm_index: "/home/maat/ntc-templates/templates/"
+  tasks:
+    - name: show run 
+      eos_command:
+        commands: "{{ command }}"
+      register: output
+
+    - debug:
+        msg: "{{ output }}"
+
+    - set_fact:
+        show_vlan: "{{ output.stdout[0] | ntc_parse(command, platform, textfsm_index ) }}"
+
+    - debug:
+        msg: "{{ show_vlan }}"
